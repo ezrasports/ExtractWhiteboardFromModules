@@ -58,7 +58,7 @@
       <AssemblyReference>UiPath.CV</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Adds the xaml file paths in a folder to the io List of Strings. Checks if the folder is an invalid folder first (Framework, Tests)&#xD;&#xA;" DisplayName="GetFilesFromDirectory" sap:VirtualizedContainerService.HintSize="380,425" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Adds the xaml file paths in a folder to the io List of Strings. Checks if the folder is an invalid folder first (Framework, Tests)&#xA;" DisplayName="GetFilesFromDirectory" sap:VirtualizedContainerService.HintSize="380,425" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:List(x:String)" sap2010:Annotation.AnnotationText="List of Directory names to ignore. Update to include directories that have non-prod code you don't want in your whiteboard. Default is {&quot;Tests&quot;, &quot;Framework&quot;}" Default="[new List (of String) from{&quot;Framework&quot;, &quot;Tests&quot;}]" Name="exceptionDirectories" />
       <Variable x:TypeArguments="s:String[]" Name="files" />
@@ -69,7 +69,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,98" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+    <ui:MultipleAssign DisplayName="Multiple Assign Get xaml files in directory" sap:VirtualizedContainerService.HintSize="338,98" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
@@ -83,13 +83,11 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="338,135" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="AddRange">
+    <InvokeMethod DisplayName="Invoke Method add files to list" sap:VirtualizedContainerService.HintSize="338,135" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="AddRange">
       <InvokeMethod.TargetObject>
         <InArgument x:TypeArguments="scg:List(x:String)">[io_Files]</InArgument>
       </InvokeMethod.TargetObject>
-      <InArgument x:TypeArguments="s:String[]">
-        <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="files" />
-      </InArgument>
+      <InArgument x:TypeArguments="s:String[]">[files]</InArgument>
     </InvokeMethod>
   </Sequence>
 </Activity>
