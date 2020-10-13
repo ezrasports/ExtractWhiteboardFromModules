@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>753,1665</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>753,1705</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ExtractArgumentsFromFile_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -210,7 +210,7 @@
                       <OutArgument x:TypeArguments="x:String">[out_Arguments]</OutArgument>
                     </ui:AssignOperation.To>
                     <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:String">[out_Arguments + vbCrLf + argName]</InArgument>
+                      <InArgument x:TypeArguments="x:String">[out_Arguments + argName + vbCrLf]</InArgument>
                     </ui:AssignOperation.Value>
                   </ui:AssignOperation>
                 </scg:List>

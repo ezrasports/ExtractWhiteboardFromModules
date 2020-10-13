@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="636,2333" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="636,2175" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="23">
       <x:String>System.Activities</x:String>
@@ -46,7 +46,7 @@
       <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Reads in a project directory and finds all the xamls in the project. It then takes their descriptions and arguments to add to a whiteboard design sheet." DisplayName="Main - Whiteboard to Modules" sap:VirtualizedContainerService.HintSize="646,2268" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Reads in a project directory and finds all the xamls in the project. It then takes their descriptions and arguments to add to a whiteboard design sheet.&#xD;&#xA;&#xD;&#xA;First select project directory to read in. &#xD;&#xA;Then select directory to place output file" DisplayName="Main - Whiteboard to Modules" sap:VirtualizedContainerService.HintSize="646,2070" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:List(x:String)" Name="whiteboardFiles" />
       <Variable x:TypeArguments="x:String" Name="projectName" />
@@ -59,17 +59,14 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Setup" sap:VirtualizedContainerService.HintSize="604,1434" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Setup" sap:VirtualizedContainerService.HintSize="604,1188" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:String" Name="projectDirectory" />
         <Variable x:TypeArguments="s:String[]" Name="files" />
         <Variable x:TypeArguments="s:String[]" Name="directories" />
         <Variable x:TypeArguments="scg:List(x:String)" sap2010:Annotation.AnnotationText="List of Directory names to ignore. Update to include directories that have non-prod code you don't want in your whiteboard. Default is {&quot;Tests&quot;, &quot;Framework&quot;}" Default="[new List (of String) from{&quot;Framework&quot;, &quot;Tests&quot;}]" Name="exceptionDirectories" />
-        <Variable x:TypeArguments="scg:List(x:String)" sap2010:Annotation.AnnotationText="Files from the top level directory to ignore by default. Starts with just Main.xaml and Process.xaml" Name="exceptionFiles">
-          <Variable.Default>
-            <mva:VisualBasicValue x:TypeArguments="scg:List(x:String)" ExpressionText="new List (of String) from {&quot;Main.xaml&quot;, &quot;Process.xaml&quot;}" />
-          </Variable.Default>
-        </Variable>
+        <Variable x:TypeArguments="scg:List(x:String)" sap2010:Annotation.AnnotationText="Files from the top level directory to ignore by default. Starts with just Main.xaml and Process.xaml" Default="[new List (of String) from {&quot;Main.xaml&quot;, &quot;Process.xaml&quot;}]" Name="exceptionFiles" />
+        <Variable x:TypeArguments="x:String" Name="outputDirectory" />
       </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -77,32 +74,8 @@
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="562,192" sap2010:WorkflowViewState.IdRef="CommentOut_1">
-        <ui:CommentOut.Body>
-          <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="242,114" sap2010:WorkflowViewState.IdRef="Sequence_7">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <ui:SelectFolder DisplayName="Select your Project Directory" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SelectFolder_1" SelectedFolder="[projectDirectory]" />
-          </Sequence>
-        </ui:CommentOut.Body>
-      </ui:CommentOut>
-      <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="562,98" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
-        <ui:MultipleAssign.AssignOperations>
-          <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
-              <ui:AssignOperation.To>
-                <OutArgument x:TypeArguments="x:String">[projectDirectory]</OutArgument>
-              </ui:AssignOperation.To>
-              <ui:AssignOperation.Value>
-                <InArgument x:TypeArguments="x:String">["C:\Users\ezra.dantowitz\OneDrive - UiPath\Documents\Code Reviews\SDS_Performer_AJ_Noah\SDS_Performer"]</InArgument>
-              </ui:AssignOperation.Value>
-            </ui:AssignOperation>
-          </scg:List>
-        </ui:MultipleAssign.AssignOperations>
-      </ui:MultipleAssign>
+      <ui:SelectFolder DisplayName="Select your Project Directory" sap:VirtualizedContainerService.HintSize="562,22" sap2010:WorkflowViewState.IdRef="SelectFolder_1" SelectedFolder="[projectDirectory]" />
+      <ui:SelectFolder DisplayName="Select your Output Directory" sap:VirtualizedContainerService.HintSize="562,22" sap2010:WorkflowViewState.IdRef="SelectFolder_2" SelectedFolder="[outputDirectory]" />
       <ui:MultipleAssign DisplayName="Multiple Assign Setup files form dir and master list" sap:VirtualizedContainerService.HintSize="562,222" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
         <ui:MultipleAssign.AssignOperations>
           <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
@@ -143,7 +116,7 @@
                 <OutArgument x:TypeArguments="x:String">[outputFile]</OutArgument>
               </ui:AssignOperation.To>
               <ui:AssignOperation.Value>
-                <InArgument x:TypeArguments="x:String">[Path.Combine(Environment.CurrentDirectory, "Whiteboard_"+projectName + ".xlsx")]</InArgument>
+                <InArgument x:TypeArguments="x:String">[Path.Combine(outputDirectory, "Whiteboard_"+projectName + ".xlsx")]</InArgument>
               </ui:AssignOperation.Value>
             </ui:AssignOperation>
           </scg:List>
@@ -208,12 +181,8 @@
                     </sap:WorkflowViewStateService.ViewState>
                     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetFilesFromDirectory workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="GetFilesFromDirectory.xaml">
                       <ui:InvokeWorkflowFile.Arguments>
-                        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_Files">
-                          <mva:VisualBasicReference x:TypeArguments="scg:List(x:String)" ExpressionText="whiteboardFiles" />
-                        </InOutArgument>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_Folder">
-                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="dir" />
-                        </InArgument>
+                        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_Files">[whiteboardFiles]</InOutArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_Folder">[dir]</InArgument>
                       </ui:InvokeWorkflowFile.Arguments>
                     </ui:InvokeWorkflowFile>
                   </Sequence>
@@ -257,28 +226,16 @@
             </sap:WorkflowViewStateService.ViewState>
             <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ExtractArgumentsFromFile workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="ExtractArgumentsFromFile.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="x:String" x:Key="in_FilePath">
-                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="file" />
-                </InArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_Arguments">
-                  <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="argNames" />
-                </OutArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_FilePath">[file]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_Arguments">[argNames]</OutArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
             <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAnnotation workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="GetAnnotation.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="x:String" x:Key="in_FilePath">
-                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="file" />
-                </InArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_Description">
-                  <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="description" />
-                </OutArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_PreCondition">
-                  <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="pre" />
-                </OutArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_PostCondition">
-                  <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="post" />
-                </OutArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_FilePath">[file]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_Description">[description]</OutArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_PreCondition">[pre]</OutArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_PostCondition">[post]</OutArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
             <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{Path.GetFileName(file), description, pre, post, argNames, &quot;&quot;, &quot;&quot;}]" DataTable="[whiteboardDT]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />

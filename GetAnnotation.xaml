@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>831,3792</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>831,4016</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetAnnotation_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="22">
@@ -62,9 +62,9 @@
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Gets the file annotation and attempts to split it into description, pre, and post condition, by looking for lines that start with &quot;Pre&quot; or &quot;Post&quot;. if it cannot, then everything will be returned in description&#xA;&#xA;Technically this will grab the first annotation in a file (rather than the top level one). This will always be the top level annotation if there is one. If none are found then the fields will be blank" DisplayName="GetAnnotation" sap:VirtualizedContainerService.HintSize="841,3727" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Gets the file annotation and attempts to split it into description, pre, and post condition, by looking for lines that start with &quot;Pre&quot; or &quot;Post&quot;. if it cannot, then everything will be returned in description&#xA;&#xA;Technically this will grab the first annotation in a file (rather than the top level one). This will always be the top level annotation if there is one. If none are found then the fields will be blank" DisplayName="GetAnnotation" sap:VirtualizedContainerService.HintSize="841,3911" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="this text precedes annotations..." Default="sap2010:Annotation.AnnotationText=" Name="annotationStart" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="this text precedes annotations..." Name="annotationStart" />
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="This text follows annotations...." Default="DisplayName=" Name="annotationEnd" />
       <Variable x:TypeArguments="x:String" Name="fileText" />
       <Variable x:TypeArguments="s:String[]" Name="fileLines" />
@@ -74,6 +74,18 @@
       <Variable x:TypeArguments="x:Int32" Name="endIdx" />
       <Variable x:TypeArguments="scg:IEnumerable(str:Match)" Name="matches" />
       <Variable x:TypeArguments="scg:List(x:String)" Name="finalLines" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="this text precedes annotations in a sequence" Name="sequenceAnnStart">
+        <Variable.Default>
+          <Literal x:TypeArguments="x:String">&lt;Sequence sap2010:Annotation.AnnotationText=</Literal>
+        </Variable.Default>
+      </Variable>
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="this text precedes annotations in a flowchart" Name="flowchartAnnStart">
+        <Variable.Default>
+          <Literal x:TypeArguments="x:String">&lt;Flowchart sap2010:Annotation.AnnotationText=</Literal>
+        </Variable.Default>
+      </Variable>
+      <Variable x:TypeArguments="x:Int32" Name="flowchartAnnIdx" />
+      <Variable x:TypeArguments="x:Int32" Name="sequenceAnnIdx" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -82,9 +94,31 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:ReadTextFile Content="[fileText]" DisplayName="Read Text File xaml file" FileName="[in_FilePath]" sap:VirtualizedContainerService.HintSize="799,80" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <If Condition="[fileText.Contains(annotationStart)]" DisplayName="If find start of annotation" sap:VirtualizedContainerService.HintSize="799,401" sap2010:WorkflowViewState.IdRef="If_1">
+    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="799,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_7">
+      <ui:MultipleAssign.AssignOperations>
+        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_23">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Int32">[flowchartAnnIdx]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Int32">[fileText.IndexOf(flowchartAnnStart)]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_24">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Int32">[sequenceAnnIdx]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Int32">[fileText.IndexOf(sequenceAnnStart)]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+        </scg:List>
+      </ui:MultipleAssign.AssignOperations>
+    </ui:MultipleAssign>
+    <If Condition="[flowchartAnnIdx &gt;= 0 or sequenceAnnIdx &gt;= 0]" DisplayName="If found start of flowhcart or sequence annotation" sap:VirtualizedContainerService.HintSize="799,416" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
-        <ui:MultipleAssign sap2010:Annotation.AnnotationText="Split after &quot; &lt;x:Members&gt;&quot; and continue til &quot; &lt;/x:Members&gt;&quot;&#xA;" DisplayName="Multiple Assign Split array into lines just after start of arguments" sap:VirtualizedContainerService.HintSize="338,251" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+        <ui:MultipleAssign sap2010:Annotation.AnnotationText="Split after annotation start and end&#xA;" DisplayName="Multiple Assign Split array into lines just after start of arguments" sap:VirtualizedContainerService.HintSize="338,266" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
           <ui:MultipleAssign.AssignOperations>
             <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
               <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -92,7 +126,15 @@
                   <OutArgument x:TypeArguments="x:Int32">[startIdx]</OutArgument>
                 </ui:AssignOperation.To>
                 <ui:AssignOperation.Value>
-                  <InArgument x:TypeArguments="x:Int32">[fileText.IndexOf(annotationStart)]</InArgument>
+                  <InArgument x:TypeArguments="x:Int32">[if(flowchartAnnIdx &gt; 0 AndAlso flowchartAnnIdx &lt; sequenceAnnIdx, flowchartAnnIdx, sequenceAnnIdx)]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_25">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="x:String">[annotationStart]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="x:String">[if(flowchartAnnIdx &gt; 0 AndAlso flowchartAnnIdx &lt; sequenceAnnIdx, flowchartAnnStart, sequenceAnnStart)]</InArgument>
                 </ui:AssignOperation.Value>
               </ui:AssignOperation>
               <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
@@ -324,9 +366,7 @@
               <InvokeMethod.TargetObject>
                 <InArgument x:TypeArguments="scg:List(x:String)">[finalLines]</InArgument>
               </InvokeMethod.TargetObject>
-              <InArgument x:TypeArguments="s:String[]">
-                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="subSplitLines" />
-              </InArgument>
+              <InArgument x:TypeArguments="s:String[]">[subSplitLines]</InArgument>
             </InvokeMethod>
           </Sequence>
         </ActivityAction>
