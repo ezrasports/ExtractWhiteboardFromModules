@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>569,471</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>753,1665</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ExtractArgumentsFromFile_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -59,20 +59,12 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Extract all arguments from a xaml file&#xD;&#xA;Depends on some assumptions about how xaml file is structured&#xD;&#xA;" DisplayName="ExtractArgumentsFromFile" sap:VirtualizedContainerService.HintSize="763,1733" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Extract all arguments from a xaml file&#xA;Depends on some assumptions about how xaml file is structured&#xA;" DisplayName="ExtractArgumentsFromFile" sap:VirtualizedContainerService.HintSize="763,1600" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="fileText" />
       <Variable x:TypeArguments="s:String[]" Name="fileLines" />
-      <Variable x:TypeArguments="x:String" Name="argumentEnd">
-        <Variable.Default>
-          <Literal x:TypeArguments="x:String">&lt;/x:Members&gt;</Literal>
-        </Variable.Default>
-      </Variable>
-      <Variable x:TypeArguments="x:String" Name="argumentStart">
-        <Variable.Default>
-          <Literal x:TypeArguments="x:String">&lt;x:Members&gt;</Literal>
-        </Variable.Default>
-      </Variable>
+      <Variable x:TypeArguments="x:String" Default="&lt;/x:Members&gt;" Name="argumentEnd" />
+      <Variable x:TypeArguments="x:String" Default="&lt;x:Members&gt;" Name="argumentStart" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -83,7 +75,7 @@
     <ui:ReadTextFile Content="[fileText]" DisplayName="Read Text File xaml file" FileName="[in_FilePath]" sap:VirtualizedContainerService.HintSize="721,80" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
     <If Condition="[fileText.Contains(argumentStart)]" DisplayName="If find start of arguments" sap:VirtualizedContainerService.HintSize="721,370" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
-        <ui:MultipleAssign sap2010:Annotation.AnnotationText="Split after &quot; &lt;x:Members&gt;&quot; and continue til &quot; &lt;/x:Members&gt;&quot;&#xD;&#xA;" DisplayName="Multiple Assign Split array into lines just after start of arguments" sap:VirtualizedContainerService.HintSize="338,220" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+        <ui:MultipleAssign sap2010:Annotation.AnnotationText="Split after &quot; &lt;x:Members&gt;&quot; and continue til &quot; &lt;/x:Members&gt;&quot;&#xA;" DisplayName="Multiple Assign Split array into lines just after start of arguments" sap:VirtualizedContainerService.HintSize="338,220" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
           <ui:MultipleAssign.AssignOperations>
             <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
               <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -228,6 +220,5 @@
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="721,93" sap2010:WorkflowViewState.IdRef="LogMessage_1" Message="[out_Arguments]" />
   </Sequence>
 </Activity>

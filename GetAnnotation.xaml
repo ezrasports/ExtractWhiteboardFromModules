@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>753,2558</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>831,3792</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetAnnotation_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="22">
@@ -37,7 +37,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="16">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -54,31 +54,26 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.CV</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Gets the file annotation and attempts to split it into description, pre, and post condition, by looking for lines that start with &quot;Pre&quot; or &quot;Post&quot;. if it cannot, then everything will be returned in description&#xD;&#xA;&#xD;&#xA;Technically this will grab the first annotation in a file (rather than the top level one). This will always be the top level annotation if there is one. If none are found then the fields will be blank" DisplayName="GetAnnotation" sap:VirtualizedContainerService.HintSize="763,2493" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Gets the file annotation and attempts to split it into description, pre, and post condition, by looking for lines that start with &quot;Pre&quot; or &quot;Post&quot;. if it cannot, then everything will be returned in description&#xA;&#xA;Technically this will grab the first annotation in a file (rather than the top level one). This will always be the top level annotation if there is one. If none are found then the fields will be blank" DisplayName="GetAnnotation" sap:VirtualizedContainerService.HintSize="841,3727" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="this text precedes annotations..." Name="annotationStart">
-        <Variable.Default>
-          <Literal x:TypeArguments="x:String">sap2010:Annotation.AnnotationText=</Literal>
-        </Variable.Default>
-      </Variable>
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="This text follows annotations...." Name="annotationEnd">
-        <Variable.Default>
-          <Literal x:TypeArguments="x:String">DisplayName=</Literal>
-        </Variable.Default>
-      </Variable>
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="this text precedes annotations..." Default="sap2010:Annotation.AnnotationText=" Name="annotationStart" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="This text follows annotations...." Default="DisplayName=" Name="annotationEnd" />
       <Variable x:TypeArguments="x:String" Name="fileText" />
       <Variable x:TypeArguments="s:String[]" Name="fileLines" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Set to line break text that I'm assuming from looking at xamls..... fishy at best" Name="annotationLineBreak">
-        <Variable.Default>
-          <Literal x:TypeArguments="x:String">&amp;#xD;&amp;#xA;</Literal>
-        </Variable.Default>
-      </Variable>
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Set to line break text that I'm assuming from looking at xamls..... fishy at best" Default="&amp;#xD;&amp;#xA;" Name="annotationLineBreak" />
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Used to track whether we're adding to Pre, Post, or Description" Name="fieldContext" />
       <Variable x:TypeArguments="x:Int32" Name="startIdx" />
       <Variable x:TypeArguments="x:Int32" Name="endIdx" />
       <Variable x:TypeArguments="scg:IEnumerable(str:Match)" Name="matches" />
+      <Variable x:TypeArguments="scg:List(x:String)" Name="finalLines" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -86,8 +81,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[fileText]" DisplayName="Read Text File xaml file" FileName="[in_FilePath]" sap:VirtualizedContainerService.HintSize="721,80" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <If Condition="[fileText.Contains(annotationStart)]" DisplayName="If find start of annotation" sap:VirtualizedContainerService.HintSize="721,401" sap2010:WorkflowViewState.IdRef="If_1">
+    <ui:ReadTextFile Content="[fileText]" DisplayName="Read Text File xaml file" FileName="[in_FilePath]" sap:VirtualizedContainerService.HintSize="799,80" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <If Condition="[fileText.Contains(annotationStart)]" DisplayName="If find start of annotation" sap:VirtualizedContainerService.HintSize="799,401" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
         <ui:MultipleAssign sap2010:Annotation.AnnotationText="Split after &quot; &lt;x:Members&gt;&quot; and continue til &quot; &lt;/x:Members&gt;&quot;&#xA;" DisplayName="Multiple Assign Split array into lines just after start of arguments" sap:VirtualizedContainerService.HintSize="338,251" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
           <ui:MultipleAssign.AssignOperations>
@@ -167,8 +162,8 @@
         </ui:MultipleAssign>
       </If.Else>
     </If>
-    <ui:Matches BuilderPattern="\&amp;\D{1,8}\;" sap:VirtualizedContainerService.HintSize="721,59" sap2010:WorkflowViewState.IdRef="Matches_1" Input="[fileText]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;ADV&quot;,&quot;OperationName&quot;:&quot;Advanced&quot;,&quot;OperationValue&quot;:&quot;\\&amp;\\D{1,8}\\;&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="\&amp;\D{1,8}\;" RegexOption="IgnoreCase" Result="[matches]" />
-    <If Condition="[matches.Count = 0]" sap:VirtualizedContainerService.HintSize="721,341" sap2010:WorkflowViewState.IdRef="If_5">
+    <ui:Matches BuilderPattern="\&amp;\D{1,8}\;" DisplayName="Matches potential line break characters" sap:VirtualizedContainerService.HintSize="799,59" sap2010:WorkflowViewState.IdRef="Matches_1" Input="[fileText]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;ADV&quot;,&quot;OperationName&quot;:&quot;Advanced&quot;,&quot;OperationValue&quot;:&quot;\\&amp;\\D{1,8}\\;&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="\&amp;\D{1,8}\;" RegexOption="IgnoreCase" Result="[matches]" />
+    <If Condition="[matches.Count = 0]" DisplayName="If no matches, set description to full text of annotation" sap:VirtualizedContainerService.HintSize="799,341" sap2010:WorkflowViewState.IdRef="If_5">
       <If.Then>
         <ui:MultipleAssign sap2010:Annotation.AnnotationText="Blank array since no arguments" DisplayName="Multiple Assign Blank Array" sap:VirtualizedContainerService.HintSize="338,191" sap2010:WorkflowViewState.IdRef="MultipleAssign_4">
           <ui:MultipleAssign.AssignOperations>
@@ -207,7 +202,7 @@
         </ui:MultipleAssign>
       </If.Then>
       <If.Else>
-        <ui:MultipleAssign sap2010:Annotation.AnnotationText="Blank array since no arguments" DisplayName="Multiple Assign Blank Array" sap:VirtualizedContainerService.HintSize="338,191" sap2010:WorkflowViewState.IdRef="MultipleAssign_3">
+        <ui:MultipleAssign sap2010:Annotation.AnnotationText="Blank array since no arguments" DisplayName="Multiple Assign split on line break" sap:VirtualizedContainerService.HintSize="338,191" sap2010:WorkflowViewState.IdRef="MultipleAssign_3">
           <ui:MultipleAssign.AssignOperations>
             <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
               <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
@@ -244,7 +239,100 @@
         </ui:MultipleAssign>
       </If.Else>
     </If>
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each line in file" sap:VirtualizedContainerService.HintSize="721,1268" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[fileLines]">
+    <Assign DisplayName="Assign list for iterating to pull lines after splitting twice" sap:VirtualizedContainerService.HintSize="799,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+      <Assign.To>
+        <OutArgument x:TypeArguments="scg:List(x:String)">[finalLines]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="scg:List(x:String)">[new List (of String)]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each &quot;line&quot; look for more sub line breaks" sap:VirtualizedContainerService.HintSize="799,1094" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[fileLines]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="line" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Second splitting" sap:VirtualizedContainerService.HintSize="763,959" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="s:String[]" Name="subSplitLines" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <If Condition="[in_FilePath.Contains(&quot;ApproveLineItemProject.xaml&quot;)]" sap:VirtualizedContainerService.HintSize="721,243" sap2010:WorkflowViewState.IdRef="If_7">
+              <If.Then>
+                <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,93" sap2010:WorkflowViewState.IdRef="LogMessage_1" Message="[line]" />
+              </If.Then>
+            </If>
+            <ui:Matches BuilderPattern="\&amp;\D{1,8}\;" DisplayName="Matches potential line break characters" sap:VirtualizedContainerService.HintSize="721,59" sap2010:WorkflowViewState.IdRef="Matches_2" Input="[line]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;ADV&quot;,&quot;OperationName&quot;:&quot;Advanced&quot;,&quot;OperationValue&quot;:&quot;\\&amp;\\D{1,8}\\;&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="\&amp;\D{1,8}\;" RegexOption="IgnoreCase" Result="[matches]" />
+            <If Condition="[matches.Count = 0]" DisplayName="If no matches, set description to full text of annotation" sap:VirtualizedContainerService.HintSize="721,310" sap2010:WorkflowViewState.IdRef="If_6">
+              <If.Then>
+                <ui:MultipleAssign sap2010:Annotation.AnnotationText="No split, just use that one line" DisplayName="Multiple Assign just one line" sap:VirtualizedContainerService.HintSize="338,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_5">
+                  <ui:MultipleAssign.AssignOperations>
+                    <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                      <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_15">
+                        <ui:AssignOperation.To>
+                          <OutArgument x:TypeArguments="s:String[]">[subSplitLines]</OutArgument>
+                        </ui:AssignOperation.To>
+                        <ui:AssignOperation.Value>
+                          <InArgument x:TypeArguments="s:String[]">[{line}]</InArgument>
+                        </ui:AssignOperation.Value>
+                      </ui:AssignOperation>
+                    </scg:List>
+                  </ui:MultipleAssign.AssignOperations>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:MultipleAssign>
+              </If.Then>
+              <If.Else>
+                <ui:MultipleAssign sap2010:Annotation.AnnotationText="" DisplayName="Multiple Assign split on line break" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_6">
+                  <ui:MultipleAssign.AssignOperations>
+                    <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                      <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_18">
+                        <ui:AssignOperation.To>
+                          <OutArgument x:TypeArguments="x:String">[annotationLineBreak]</OutArgument>
+                        </ui:AssignOperation.To>
+                        <ui:AssignOperation.Value>
+                          <InArgument x:TypeArguments="x:String">[matches(0).tostring]</InArgument>
+                        </ui:AssignOperation.Value>
+                      </ui:AssignOperation>
+                      <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_22">
+                        <ui:AssignOperation.To>
+                          <OutArgument x:TypeArguments="s:String[]">[subSplitLines]</OutArgument>
+                        </ui:AssignOperation.To>
+                        <ui:AssignOperation.Value>
+                          <InArgument x:TypeArguments="s:String[]">[Split(line, annotationLineBreak)]</InArgument>
+                        </ui:AssignOperation.Value>
+                      </ui:AssignOperation>
+                    </scg:List>
+                  </ui:MultipleAssign.AssignOperations>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:MultipleAssign>
+              </If.Else>
+            </If>
+            <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="721,135" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="AddRange">
+              <InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="scg:List(x:String)">[finalLines]</InArgument>
+              </InvokeMethod.TargetObject>
+              <InArgument x:TypeArguments="s:String[]">
+                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="subSplitLines" />
+              </InArgument>
+            </InvokeMethod>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each line in annotation" sap:VirtualizedContainerService.HintSize="799,1268" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[finalLines]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:String">
           <ActivityAction.Argument>
